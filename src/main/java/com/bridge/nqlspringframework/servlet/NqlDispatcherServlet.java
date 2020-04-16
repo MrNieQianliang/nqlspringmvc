@@ -65,7 +65,7 @@ public class NqlDispatcherServlet extends HttpServlet {
 
         initHandMapping();
 
-        System.out.println("NqlSpring is Start");
+        doPrintAllDatas();
     }
 
     @Override
@@ -182,7 +182,9 @@ public class NqlDispatcherServlet extends HttpServlet {
         }
     }
 
-
+    /**
+     * IOC容器中的对象实例话
+     */
     private void doIntances(){
         if (classNameList.isEmpty()){
             return;
@@ -222,6 +224,10 @@ public class NqlDispatcherServlet extends HttpServlet {
         }
     }
 
+    /**
+     * 扫描当前目录下面所有的包
+     * @param scanPackage
+     */
     private void doScanner(String scanPackage){
         URL resources = this.getClass().getClassLoader()
                 .getResource("/"+scanPackage.replaceAll("\\.","/"));
@@ -246,6 +252,10 @@ public class NqlDispatcherServlet extends HttpServlet {
         }
     }
 
+    /**
+     * 加载配置文件
+      * @param contextConfigLocation
+     */
     private void doLoadConfig(String contextConfigLocation){
         InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(contextConfigLocation);
 
@@ -262,6 +272,29 @@ public class NqlDispatcherServlet extends HttpServlet {
                 }
             }
         }
+    }
+
+    /**
+     * 完成之后打印所有信息
+     */
+    private void doPrintAllDatas(){
+        System.out.println("-----> 如下Data是Spring中的对象和信息");
+
+        System.out.println("contentConfig.properties name"+ contextConfig.propertyNames());
+
+        System.out.println("ClassNameList data is -------->");
+
+        for (String s : classNameList) {
+            System.out.println("ClassNameList 容器中的对象是：" + s);
+        }
+
+        System.out.println("HandMapping 容器中对象-------->");
+
+        handMapping.forEach((k,v)->{
+            System.out.println("Key is ---" + k +"  Value is ---"+v);
+        });
+
+        System.out.println("Nql Spring Start is Successful");
     }
 
     /**
